@@ -3,7 +3,7 @@ package com.example.bankingtesttask.controllers;
 
 import com.example.bankingtesttask.entities.Account;
 import com.example.bankingtesttask.exceptions.*;
-import com.example.bankingtesttask.services.AccountService;
+import com.example.bankingtesttask.services.AccountServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,18 +14,18 @@ import java.util.List;
 @RequestMapping("/api/v1/accounts")
 public class AccountController {
 
-    private final AccountService accountService;
+    private final AccountServiceImpl accountServiceImpl;
 
     @Autowired
-    public AccountController(AccountService accountService) {
-        this.accountService = accountService;
+    public AccountController(AccountServiceImpl accountServiceImpl) {
+        this.accountServiceImpl = accountServiceImpl;
     }
 
 
     //два теста - есть счет и нет счета
     @GetMapping("{accountId}")
     public Account getAccountById(@PathVariable("accountId") Long accountId) {
-        return accountService.getAccountById(accountId);
+        return accountServiceImpl.getAccountById(accountId);
     }
 
     //1) userId левый;
@@ -43,7 +43,7 @@ public class AccountController {
                                           @RequestParam(name = "limit", required = false) Integer limit,
                                           @RequestParam(name = "offset", required = false) Integer offset
                                           ) {
-        return accountService.getUsersAccountsWithParameters(userId, active,closed,currencyName,balanceM,balanceL,
+        return accountServiceImpl.getUsersAccountsWithParameters(userId, active,closed,currencyName,balanceM,balanceL,
                 limit, offset);
     }
 
@@ -58,7 +58,7 @@ public class AccountController {
     @PostMapping("")
     public ResponseEntity<Long> addAccount(@RequestBody Account account) throws InvalidAccountNumberException,
             InvalidInitAccountsBalanceException, CreateClosedAccountException {
-        return accountService.addAccount(account);
+        return accountServiceImpl.addAccount(account);
     }
 
     /*
@@ -71,7 +71,7 @@ public class AccountController {
     public ResponseEntity<String> changeAccountsBalance(@PathVariable(name = "accountId") Long accountId,
                                                         @RequestParam(name = "value") BigDecimal value)
             throws BalanceChangingOfClosedAccountException, DecreaseNegativeBalanceException {
-        return accountService.changeAccountsBalance(accountId,value);
+        return accountServiceImpl.changeAccountsBalance(accountId,value);
     }
 
     /*
@@ -82,7 +82,7 @@ public class AccountController {
     public ResponseEntity<String> closeAccount(@PathVariable(name = "accountId") Long accountId)
             throws ClosingClosedAccountException {
 
-        return accountService.closeAccount(accountId);
+        return accountServiceImpl.closeAccount(accountId);
     }
 
 
