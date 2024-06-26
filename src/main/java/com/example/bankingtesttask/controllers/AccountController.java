@@ -22,17 +22,12 @@ public class AccountController {
     }
 
 
-    //два теста - есть счет и нет счета
     @GetMapping("{accountId}")
     public Account getAccountById(@PathVariable("accountId") Long accountId) {
         return accountServiceImpl.getAccountById(accountId);
     }
 
-    //1) userId левый;
-    // 2) balanceM > balanceL (ничего не вернет)
-    // 3) active=true, closed =false
-    // 4) оба true, оба false
-    // 5) limit и offset
+
     @GetMapping("")
     public List<Account> getUsersAccounts(@RequestParam(name = "userId") Long userId,
                                           @RequestParam(name = "active", required = false, defaultValue = "true") Boolean active,
@@ -48,25 +43,14 @@ public class AccountController {
     }
 
 
-    //1) кривая валюта в счете
-    // 2) кривое отделение в счете
-    // 3) п1 для кс
-    // 4) п2 для кс
-    // 5) отриц баланс
-    // 6) создание закрытого счета
-    // 7) успешный
+
     @PostMapping("")
     public ResponseEntity<Long> addAccount(@RequestBody Account account) throws InvalidAccountNumberException,
             InvalidInitAccountsBalanceException, CreateClosedAccountException {
         return accountServiceImpl.addAccount(account);
     }
 
-    /*
-    1) Изменение закрытого счета
-    2) Списание с минусового счета
-    3) успешный в increase
-    4) успешный в decrease
-    */
+
     @PostMapping("{accountId}/changeBalance")
     public ResponseEntity<String> changeAccountsBalance(@PathVariable(name = "accountId") Long accountId,
                                                         @RequestParam(name = "value") BigDecimal value)
@@ -74,10 +58,7 @@ public class AccountController {
         return accountServiceImpl.changeAccountsBalance(accountId,value);
     }
 
-    /*
-    1) Попытка закрыть закрытый счет
-    2) Успешный
-     */
+
     @PostMapping("{accountId}/close")
     public ResponseEntity<String> closeAccount(@PathVariable(name = "accountId") Long accountId)
             throws ClosingClosedAccountException {
