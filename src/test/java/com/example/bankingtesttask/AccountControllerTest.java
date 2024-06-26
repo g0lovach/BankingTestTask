@@ -25,6 +25,7 @@ import java.util.List;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 public class AccountControllerTest {
@@ -133,10 +134,19 @@ public class AccountControllerTest {
                         .param("active","true")
                         .param("closed","true")
                         .param("currencyName","RUB")
-                        .param("balanceM","-1")
-                        .param("balanceL","100")
+                        .param("balanceMoreThan","-1")
+                        .param("balanceLessThan","100")
                         .param("limit","100")
-                        .param("offset","0"))
+                        .param("offset","0")).andDo(print())
+                .andExpect(jsonPath("$.length()").value(1))
+                .andExpect(jsonPath("$[0].accNumber").value("12345840811114567891"))
+                .andExpect(jsonPath("$[0].corAcc").value("30145840811114567891"))
+                .andExpect(jsonPath("$[0].user.fio").value("Иванов Иван Иванович"))
+                .andExpect(jsonPath("$[0].division.name").value("Отделение 1 ПАО NБанк"))
+                .andExpect(jsonPath("$[0].division.bic").value("123456780"))
+                .andExpect(jsonPath("$[0].division.inn").value("7700000000"))
+                .andExpect(jsonPath("$[0].currency.name").value("USD"))
+                .andExpect(jsonPath("$[0].currency.code").value("840"))
                 .andExpect(status().isOk());
 
     }
