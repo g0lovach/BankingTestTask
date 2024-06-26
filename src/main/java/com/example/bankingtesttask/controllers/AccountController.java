@@ -33,8 +33,8 @@ public class AccountController {
                                           @RequestParam(name = "active", required = false, defaultValue = "true") Boolean active,
                                           @RequestParam(name = "closed", required = false, defaultValue = "true") Boolean closed,
                                           @RequestParam(name = "currencyName", required = false, defaultValue = "RUB") String currencyName,
-                                          @RequestParam(name = "balanceMoreThen", required = false) BigDecimal balanceM,
-                                          @RequestParam(name = "balanceLessThen", required = false) BigDecimal balanceL,
+                                          @RequestParam(name = "balanceMoreThan", required = false) BigDecimal balanceM,
+                                          @RequestParam(name = "balanceLessThan", required = false) BigDecimal balanceL,
                                           @RequestParam(name = "limit", required = false) Integer limit,
                                           @RequestParam(name = "offset", required = false) Integer offset
                                           ) {
