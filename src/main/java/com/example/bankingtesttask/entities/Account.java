@@ -42,7 +42,7 @@ public class Account {
     private String accNumber;
 
 
-    @Column(name = "cor_acc", unique = true)
+    @Column(name = "cor_acc")
     @Length(min = 20, max=20)
     @NotNull
     private String corAcc;
@@ -51,20 +51,12 @@ public class Account {
     @NotNull
     private BigDecimal balance;
 
-    /**
-     * мб переименовать в date???
-     */
     @Column(name = "time_open")
     @NotNull
     private Timestamp timeOpen;
 
-
-    /**
-     * мб переименовать в date???
-     */
     @Column(name = "time_close")
     private Timestamp timeClose;
-
 
     @ManyToOne(optional = false, targetEntity = User.class)
     @JoinColumn(name = "user_id", referencedColumnName = "id", insertable=false, updatable=false )

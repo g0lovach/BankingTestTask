@@ -51,7 +51,7 @@ public class AccountServiceImpl implements AccountService {
         }
         if(validateAccountNumber(account.getAccNumber(), account.getCurrencyId(),account.getDivisionId())
                 && validateAccountNumber(account.getCorAcc(), account.getCurrencyId(),account.getDivisionId())
-                && account.getCorAcc().startsWith("301")){
+                && account.getCorAcc().startsWith("30101")){
             accountRepository.save(account);
             return new ResponseEntity<>(account.getId(), HttpStatus.OK);
         }
@@ -79,7 +79,7 @@ public class AccountServiceImpl implements AccountService {
         if(balanceL==null){
             balanceL = BigDecimal.valueOf(Double.MAX_VALUE);
         }
-        List<Account> res = accountRepository.getAccountByUserId(userId);
+        List<Account> res = accountRepository.getAccountsByUserId(userId);
         if(!active){
             res = res.stream().filter(e -> e.getTimeClose() != null).collect(Collectors.toList());
         }
@@ -134,9 +134,12 @@ public class AccountServiceImpl implements AccountService {
     }
 
 
-    private boolean validateAccountNumber(String accNumber, Integer curId, Long divId){
+    private boolean validateAccountNumber(String accNumber, Integer curId, Long divId) throws InvalidAccountNumberException {
         Currency tmpCur = currencyRepository.findCurrencyByCode(accNumber.substring(5,8));
         Division tmpDiv = divisionRepository.findDivisionByCode(accNumber.substring(9, 13));
+        if(tmpCur==null || tmpDiv == null){
+            throw new InvalidAccountNumberException("Account number or correspondent account number is invalid");
+        }
         return tmpCur.getId().equals(curId) && tmpDiv.getId().equals(divId);
     }
 
